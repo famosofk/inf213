@@ -12,11 +12,11 @@ Data::Data(const int d, const int m, const int a){
 }
 
 const int Data::difDias(const Data& data2){
-    int tipo = compData(data2);
-    int retorno = 0;
-    if(tipo != 0)
-        return this->dia - data2.dia + (this->mes - data2.mes) * 30 + (this->ano - data2.ano) * 365;
-    return retorno;
+    int dias, meses, anos;
+    dias = this->dia - data2.dia;
+    meses = (this->mes - data2.mes) * 30;
+    anos = (this->ano - data2.ano) * 365;
+    return abs(dias) + abs(meses) + abs(anos);
 }
 
 void Data::setDia(const int d){

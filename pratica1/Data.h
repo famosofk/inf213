@@ -24,10 +24,6 @@ class Data{
     const void imprime() const;
     friend ostream& operator<<(ostream& os, const Data& d);
     friend istream& operator>>(istream& is, Data& d);
-
-
-    
-    
 };
 
 #endif
