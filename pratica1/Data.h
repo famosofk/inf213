@@ -19,8 +19,8 @@ class Data{
     const int getDia();
     const int getMes();
     const int getAno();
-    const int compData(const Data& data2);
-    const int difDias(const Data& data2);
+    const int compData(const Data& data2)const;
+    const int difDias(const Data& data2)const;
     const void imprime() const;
     friend ostream& operator<<(ostream& os, const Data& d);
     friend istream& operator>>(istream& is, Data& d);

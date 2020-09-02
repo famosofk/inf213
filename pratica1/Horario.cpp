@@ -53,7 +53,7 @@ istream& operator>>(istream& is, Horario& hor){
 }
 
 void const Horario::imprime() const{
-    cout << hora << " " << minuto << " " << segundo << "\n";
+    cout << hora << " " << minuto << " " << segundo;
 }
 
 int const Horario::compHorario(const Horario& horario2) const{

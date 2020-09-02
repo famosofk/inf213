@@ -11,7 +11,7 @@ Data::Data(const int d, const int m, const int a){
     setAno(a);
 }
 
-const int Data::difDias(const Data& data2){
+const int Data::difDias(const Data& data2) const {
     int dias, meses, anos;
     dias = this->dia - data2.dia;
     meses = (this->mes - data2.mes) * 30;
@@ -70,10 +70,10 @@ const void Data::imprime() const{
 }
 
 ostream& operator<<(ostream& os, const Data& d){
- //   os << d.dia << " " << d.mes << " " << d.ano << "\n";
         d.imprime();
-    return os;
+        return os;
 }
+
 istream& operator>>(istream& is, Data& d){
     int di, me, an;
     is >> di >> me >> an;
@@ -81,7 +81,7 @@ istream& operator>>(istream& is, Data& d){
     return is;
 }
 
-const int Data::compData(const Data& data2){
+const int Data::compData(const Data& data2) const {
     int resultado = 0;
     if(this->ano > data2.ano)
         resultado = 1;

@@ -20,9 +20,11 @@ class ItemAgenda{
     void setDesc(const string& des);
     void setData(const Data& dat);
     void setHorario(const Horario& hor);
-    const string& getDesc() const;
-    const Data& getData() const;
-    const Horario& getHorario()const;
+    string& getDesc();
+    Data& getData();
+    Horario& getHorario();
+    friend ostream& operator<<(ostream& os, const ItemAgenda& it);
+   
 
 };
 
@@ -33,8 +35,9 @@ class Agenda{
 
     public:
     Agenda();
-    void const inserirItem(const ItemAgenda& it);
-    void const compromissosData(const Data& dat);
+    void inserirItem(const ItemAgenda& it);
+    void const compromissosData(const Data& dat)const;
+    
 };
 
 #endif
