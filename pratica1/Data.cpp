@@ -66,7 +66,7 @@ const int Data::getAno(){
 }
 
 const void Data::imprime() const{
-    cout<< dia << " " << mes << " " << ano << "\n";
+    cout<< dia << " " << mes << " " << ano;
 }
 
 ostream& operator<<(ostream& os, const Data& d){
