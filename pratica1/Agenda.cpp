@@ -37,7 +37,6 @@ Horario& ItemAgenda::getHorario(){
 }
 
 ostream& operator<<(ostream& os, ItemAgenda& it){
-    it.getData().imprime();
     it.getHorario().imprime(); 
     os << " " << it.getDesc() << "\n";
     return os;
