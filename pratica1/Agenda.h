@@ -20,9 +20,9 @@ class ItemAgenda{
     void setDesc(const string& des);
     void setData(const Data& dat);
     void setHorario(const Horario& hor);
-    string& getDesc();
-    Data& getData();
-    Horario& getHorario();
+    const Data& getData() const;
+    const string& getDesc() const;
+    const Horario& getHorario() const;
     friend ostream& operator<<(ostream& os, const ItemAgenda& it);
    
 

@@ -14,7 +14,7 @@ void Horario::setHora(const int h){
     else{
         if(h<0)
             this->hora = 0;
-        if(h>23)
+        else if(h>23)
             this->hora = 23;
     }
 }
@@ -24,7 +24,7 @@ void Horario::setMinuto(const int m){
     else{
         if(m<0)
         this->minuto = 0;
-        if(m>59)
+        else if(m>59)
         this->minuto = 59;
     }
     
@@ -35,7 +35,7 @@ void Horario::setSegundo(const int s){
     else{
         if(s<0)
         this->segundo = 0;
-        if(s>59)
+        else if(s>59)
         this->segundo= 59;
     }
 }

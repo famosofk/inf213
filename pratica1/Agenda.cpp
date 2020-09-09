@@ -4,6 +4,7 @@
 using namespace std;
 
 ItemAgenda::ItemAgenda(){}
+ItemAgenda::~ItemAgenda(){}
 ItemAgenda::ItemAgenda(const string& des, const Data& dat, const Horario& hor){
     setData(dat);
     setHorario(hor);
@@ -14,7 +15,6 @@ ItemAgenda::ItemAgenda(const ItemAgenda& it){
     setDesc(it.descricao);
     setHorario(it.horario);
 }
-ItemAgenda::~ItemAgenda(){}
 
 void ItemAgenda::setData(const Data& dat){
     data = dat;
@@ -26,13 +26,13 @@ void ItemAgenda::setDesc(const string& des){
     descricao = des;
 }
 
-Data& ItemAgenda::getData(){
+const Data& ItemAgenda::getData() const {
     return data;
 }
-string& ItemAgenda::getDesc(){
+const string& ItemAgenda::getDesc() const {
     return descricao;
 }
-Horario& ItemAgenda::getHorario(){
+const Horario& ItemAgenda::getHorario() const{
     return horario;
 }
 
