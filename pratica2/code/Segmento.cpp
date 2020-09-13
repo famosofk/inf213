@@ -1,5 +1,6 @@
 #include "FigBase.h"
 #include "Segmento.h"
+#include<iostream>
 
 Segmento::Segmento() : FigBase(){}
 Segmento::Segmento(double x, double y, double x2, double y2, int e, int c, int t) : FigBase(x, y, e, c, t){}

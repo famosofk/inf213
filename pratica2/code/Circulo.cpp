@@ -1,5 +1,6 @@
 #include "FigBase.h"
 #include "Circulo.h"
+#include<iostream>
 
 
 Circulo::Circulo() : FigBase(){}
@@ -20,4 +21,17 @@ float Circulo::perimetro()const{
 }
 void Circulo::imprime()const{
     FigBase::imprime();
+}
+
+void le(Circulo& c){
+    FigBase::le(c);
+    double r;
+    std::cin >> r;
+    c.setRaio(r);
+}
+
+ostream& operator<<(ostream& os, Circulo& c){
+    FigBase::imprime();
+    std::cout<<"Raio: " << c.getRaio();
+    std::cout << "Area: " << area() << " Perimetro: " << perimetro << "\n";
 }

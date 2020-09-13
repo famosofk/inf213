@@ -55,6 +55,18 @@ operator<<(ostream & os, FigBase & f){
     return os;
 }
 
+operator>>(istream& is, FigBase& f){
+    return is;    
+}
+
+void FigBase::le(FigBase &f){
+    double x1, x2;
+    int e, c, t;
+    cin >> x1>> x2>> e>> c>> t;
+    f.setX(x1); f.setY(x2); f.setEspessura(e); f.setCor(c); f.setTipo(t); 
+}
+
+
 void FigBase::imprime() const {
     std::cout << "x: " <<x <<" y: " << y << "\n"
     std::cout << " ---*--- ATRIBUTOS DA LINHA ---*--- " << "\n";

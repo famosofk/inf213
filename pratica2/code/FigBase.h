@@ -21,7 +21,10 @@ class FigBase{
     const int getTipo() const;
     void setTipo(const int);
     void imprime() const;
+    void le(FigBase& f);
     friend ostream& operator<<( ostream& os, FigBase& f);
+    friend istream& operator>>(istream& is, FigBase& f);
+
 
 };
 

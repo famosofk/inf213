@@ -17,6 +17,8 @@ class Circulo : public FigBase{
     float perimetro() const;
     void imprime() const;
     friend ostream& operator<<(ostream& os, Circulo & c);
+    friend istream& operator<<(istream& is, Circulo & c);
+    void le(Circulo &c);
 
 };
 
