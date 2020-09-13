@@ -14,13 +14,14 @@ class FigBase{
     const double getY() const;
     void setX(const double);
     void setY(const double);
-    int getEspessura() const;
+    const int getEspessura() const;
     void setEspessura(const int);
-    int getCor() const;
+    const int getCor() const;
     void setCor(const int);
-    int getTipo() const;
+    const int getTipo() const;
     void setTipo(const int);
     void imprime() const;
+    friend ostream& operator<<( ostream& os, FigBase& f);
 
 };
 

@@ -18,6 +18,7 @@ class Retangulo: public FigBase{
     const float area() const;
     const float perimetro() const;
     void imprime() const;
+    friend operator<<(ostream& os, Retangulo &r);
     
 
 

@@ -11,8 +11,8 @@ class Segmento: public FigBase{
     public:
     Segmento();
     Segmento(double, double, double, double, int, int, int);
-    double getX2()const;
-    double getY2() const;
+    double const getX2()const;
+    double const getY2() const;
     void setX2(const double);
     void setY2(const double);
     float area() const;
