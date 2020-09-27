@@ -1,0 +1,10 @@
+Questão 1:
+pertence() = O(n)
+insere() = O(n)
+numElementos() = O(1)
++ = O(n2)
+* = O(n2)
+- = O(n2)
+
+Questão 2: Não.
+

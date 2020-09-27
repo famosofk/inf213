@@ -155,7 +155,11 @@ template<typename T>
 Conjunto<T>& Conjunto<T>::operator=(const Conjunto<T> &other) {
     if(&other == this) { return *this; }
     delete [] elementos;
-    this->elementos = this->copyElements(other->numelementos(), other);
+    this->num_elementos = other.num_elementos;
+    this->tam_array = other.tam_array;
+    for( int i=0; i< other.num_elementos; i++)
+        this->elementos[i] = other.elementos[i];
+    //this->elementos = this->copyElements(other.numelementos(), other);
     return *this;
 }
 
