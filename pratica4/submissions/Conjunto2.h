@@ -58,7 +58,7 @@ class Conjunto{
         }else{
             for(int i=0; i< this->num_elementos; i++) {
                 if(other.pertence(this->getElement(i))){
-                    a.insere(this->getElement(i));
+                    a.insere(other.getElement(i));
                 }
             }
         }
@@ -166,11 +166,16 @@ istream &operator>>(istream &is, Conjunto<T> &conjunto) {
 }
 
 template<typename T>
-ostream &operator<<(ostream &os, const Conjunto<T> &object) {
+ostream &operator<<(ostream &os, const Conjunto<T> &object) { 
+    if(object.numelementos() == 0){
+        os << "{}";
+    }
+    else{
         os << "{" << object.getElement(0);
         for(int i=1; i<object.numelementos(); i++)
-            os << "," << object.getElement(i);
+        os << "," << object.getElement(i);
         os << "}";	
+    }    
     return os;
 }
 
