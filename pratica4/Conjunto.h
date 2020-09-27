@@ -31,6 +31,8 @@ class Conjunto{
     void insere(T object);
     int numeElementos();
     bool operator==(const Conjunto<T> &other) const;
+    ostream &operator<<(ostream &, const Conjunto<T> &);
+    istream &operator>>(istream &, Conjunto<T> &);
     
     
 };
@@ -96,14 +98,24 @@ int Conjunto<T>::numeElementos() {
 template <class T>
 bool Conjunto<T>::operator==(const Conjunto<T> &other) const{
 	int size = other->num_elementos();
+    if(num_elementos != size)
+        return false;
     for(int i=0;i<size;i++)
 		if(elementos[i]!=other.v[i]) 
 			return false;
 	return true;
 }
+
+template <class T>
+istream &operator>>(istream &is, Conjunto<T> &conjunto){
+    T c;
+    while(is >> c){
+        conjunto.insere(c);
+    }
+    return is;
+}
+
 #endif
-
-
 /*
 
 template <class T>
