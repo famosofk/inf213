@@ -49,7 +49,7 @@ Conjunto<T>::Conjunto(Conjunto<T>& original) {
     num_elementos = original.num_elementos;
     elementos = new T[num_elementos];
     for (int i=0; i<num_elementos; i++)
-        elementos[i] = origional.elementos[i];
+        elementos[i] = original.elementos[i];
 }
 
 template<typename T>
