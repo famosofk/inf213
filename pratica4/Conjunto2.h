@@ -36,35 +36,26 @@ class Conjunto{
     const T& operator[](int i) const{return elementos[i];}
     
     Conjunto<T> operator+(const Conjunto<T> &other){
-        Conjunto<T> a = *this;
-        for(int i=0; i< other.num_elementos; i++) {
-            if(a.num_elementos + 1 > a.tam_array) {
-                T* pointer = new T[a.tam_array*2];
-                for(int i=0; i< a.tam_array; i++) {
-                    pointer[i] = a.elementos[i];
-                }
-                delete[] a.elementos;
-                a.elementos = pointer;
-                a.tam_array *= 2;
-            }
-            a.insere(other[i]);
-        }
+        Conjunto<T> a(this->numelementos() + other.numelementos());
+        for(int i = 0; i < this->numelementos(); i++)
+            a.insere(this->elementos[i]);
+        for(int i = 0; i < other.num_elementos; i++)
+            a.insere(other.elementos[i]);
         return a;
     }
 
     Conjunto<T> operator*(const Conjunto<T> &other) {
         Conjunto<T> a;
-        a.num_elementos = 0;
         delete [] a.elementos;
-        if (this->num_elementos < other.num_elementos){
-              a.elementos = new T[this->num_elementos];
-              for(int i=0; i< other.num_elementos; i++) {
-                  if(this->pertence(other.getElement(i))){
-                      a.insere(other.getElement(i));
+        a.num_elementos = this->num_elementos > other.num_elementos ? other.num_elementos : this->num_elementos; 
+        a.elementos = new T[a.num_elementos];
+        if (this->num_elementos > other.num_elementos){
+            for(int i=0; i< other.num_elementos; i++) {
+                if(this->pertence(other.getElement(i))){
+                    a.insere(other.getElement(i));
                   }
               }      
         }else{
-            a.elementos = new T[other.num_elementos];
             for(int i=0; i< this->num_elementos; i++) {
                 if(other.pertence(this->getElement(i))){
                     a.insere(other.getElement(i));
@@ -152,15 +143,16 @@ bool Conjunto<T>::operator==(const Conjunto<T> &other) const {
 	return true;
 }
 
-template<typename T>
-Conjunto<T>& Conjunto<T>::operator=(const Conjunto<T> &other) {
-    if(&other == this) { return *this; }
-    delete [] this->elementos;
-    this->num_elementos = other.num_elementos;
-    this->tam_array = other.tam_array;
-    this->elementos = new T[other.tam_array];
-    for( int i=0; i< other.num_elementos; i++)
+template <class T>
+Conjunto<T>& Conjunto<T>::operator=(const Conjunto<T>& other){
+    if(this == &other) {return *this;}
+    delete []this->elementos;
+    this->tam_array = other.num_elementos;
+    this->num_elementos = other.numelementos();
+    this->elementos = new T[this->numelementos()];
+    for(int i = 0; i < this->numelementos(); i++){
         this->elementos[i] = other.elementos[i];
+    }
     return *this;
 }
 
