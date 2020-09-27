@@ -10,8 +10,8 @@
 #include <iostream>
 
 
-int main()
-{  Conjunto<double> dc1(5), dc2(7), dc(12);
+int main() {  
+   Conjunto<double> dc1(5), dc2(7), dc(12);
    double r;
    cout << "Conjunto 1 (de double): \n";
    double x;
@@ -55,7 +55,7 @@ int main()
          break;
       }
 
-   return 0;
+   return 0; 
 }
 
 /* -----------------------------------------------------
