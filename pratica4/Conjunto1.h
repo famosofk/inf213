@@ -17,10 +17,9 @@ template<typename T>
 class Conjunto{
     
     private:
-    int tam_array; 
-    int num_elementos;
+    int tam_array = 0; 
+    int num_elementos = 0;
     T* elementos;
-    T* copyElements(int size, Conjunto<T>& object) const;
 
     public:
 
@@ -48,7 +47,9 @@ template<typename T>
 Conjunto<T>::Conjunto(Conjunto<T>& original) {
     tam_array = original.tam_array;
     num_elementos = original.num_elementos;
-    elementos = copyElements(tam_array, original);
+    elementos = new T[num_elementos];
+    for (int i=0; i<num_elementos; i++)
+        elementos[i] = origional.elementos[i];
 }
 
 template<typename T>
@@ -69,15 +70,6 @@ bool Conjunto<T>::pertence(T object) const {
         }
     }
     return false;
-}
-
-template<typename T>
-T* Conjunto<T>::copyElements(int size, Conjunto<T>& object) const{
-    T* pointer = new T[size];
-    for(int i=0; i < object.num_elementos; i++){
-        pointer[i] = object.elementos[i];
-    }
-    return pointer;   
 }
 
 template<typename T>
@@ -104,11 +96,17 @@ bool Conjunto<T>::operator==(const Conjunto<T> &other) const{
 			return false;
 	return true;
 }
+
+
 template<typename T>
-Conjunto<T>& Conjunto<T>::operator=(const Conjunto<T> &other){
+Conjunto<T>& Conjunto<T>::operator=(const Conjunto<T> &other) {
     if(&other == this) { return *this; }
     delete [] elementos;
-    this->elementos = this->copyElements(other->numelementos(), other);
+    this->num_elementos = other.num_elementos;
+    this->tam_array = other.tam_array;
+    this->elementos = new T[other.tam_array];
+    for( int i=0; i< other.num_elementos; i++)
+        this->elementos[i] = other.elementos[i];
     return *this;
 }
 
