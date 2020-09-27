@@ -8,3 +8,64 @@ numElementos() = O(1)
 
 Questão 2: Não.
 
+Questão 3: 
+real    0m0.009s
+user    0m0.005s
+sys     0m0.004s
+
+real    0m0.009s
+user    0m0.005s
+sys     0m0.004s
+
+real    0m0.042s
+user    0m0.034s
+sys     0m0.008s
+
+real    0m0.779s
+user    0m0.773s
+sys     0m0.005s
+
+real    0m3.078s
+user    0m3.078s
+sys     0m0.000s
+
+real    0m12.340s
+user    0m12.326s
+sys     0m0.012s
+
+real    0m49.134s
+user    0m49.095s
+sys     0m0.028s
+
+Questão 4:
+real    0m0.008s
+user    0m0.001s
+sys     0m0.008s
+
+real    0m0.009s
+user    0m0.005s
+sys     0m0.004s
+
+real    0m0.066s
+user    0m0.067s
+sys     0m0.000s
+
+real    0m1.448s
+user    0m1.447s
+sys     0m0.001s
+
+real    0m5.973s
+user    0m5.964s
+sys     0m0.008s
+
+real    0m22.798s
+user    0m22.796s
+sys     0m0.001s
+
+real    1m34.940s
+user    1m34.822s
+sys     0m0.105s
+
+5) No pior cenário a compilação com -o3 otimizou a execução em 9 vezes.
+
+

@@ -6,8 +6,7 @@ using namespace std;
 
 int main(){
 
-    int n;
-    std::cin >> n;
+    int n = 40000;
     Conjunto<int> a1(n);
     Conjunto<int> b1(n);
     Conjunto<int> c1(2*n); 
@@ -16,6 +15,6 @@ int main(){
         b1.insere(i);
     }
     c1 = a1 + b1;
-    cout << c1.pertence(10);    
+    cout << c1.pertence(10) << endl;    
 
 }
