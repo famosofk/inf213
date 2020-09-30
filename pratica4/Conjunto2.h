@@ -45,32 +45,17 @@ class Conjunto{
     }
 
     Conjunto<T> operator*(const Conjunto<T> &other) {
-        Conjunto<T> a;
-        delete [] a.elementos;
-        a.num_elementos = this->num_elementos > other.num_elementos ? other.num_elementos : this->num_elementos; 
-        a.elementos = new T[a.num_elementos];
-        if (this->num_elementos > other.num_elementos){
-            for(int i=0; i< other.num_elementos; i++) {
-                if(this->pertence(other.getElement(i))){
-                    a.insere(other.getElement(i));
-                  }
-              }      
-        }else{
-            for(int i=0; i< this->num_elementos; i++) {
-                if(other.pertence(this->getElement(i))){
-                    a.insere(this->getElement(i));
-                }
-            }
-        }
+        int size = this->tam_array > other.tam_array ? other.tam_array : this->tam_array;
+        Conjunto<T> a(size);
+            for(int i = 0; i< this->numelementos(); i++)
+                if(other.pertence(this->elementos[i]))
+                    a.insere(this->elementos[i]);
         return a;
     }
 
     Conjunto<T> operator-(const Conjunto<T> &other) {
-        Conjunto<T> a;
-        a.num_elementos = 0;
-        delete [] a.elementos;
-        a.tam_array = this->tam_array;
-        a.elementos = new T[a.tam_array];
+        int size = this->tam_array;
+        Conjunto<T> a(size);
         for(int i=0; i<this->numelementos();i++)
             if(!other.pertence(this->getElement(i)))
                 a.insere(this->getElement(i));
@@ -167,10 +152,18 @@ istream &operator>>(istream &is, Conjunto<T> &conjunto) {
 
 template<typename T>
 ostream &operator<<(ostream &os, const Conjunto<T> &object) {
-        os << "{" << object.getElement(0);
-        for(int i=1; i<object.numelementos(); i++)
-            os << "," << object.getElement(i);
-        os << "}";	
+    if(object.numelementos() == 0)
+        os << "{}";
+    else if(object.numelementos() == 1)
+        os << "{" << object.getElement(0) << "}";
+    else {
+        os << "{";
+        for(int i=0; i<object.numelementos()-1; i++)
+            os << object.getElement(i) << ",";
+            os << object.getElement(object.numelementos()-1);
+            os << "}";
+        
+    }	
     return os;
 }
 
