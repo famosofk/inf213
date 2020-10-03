@@ -54,7 +54,7 @@ public:
 
 
 private:
-	?????? data; //declare o membro de dados data, que devera armazenar os elementos da lista
+	T* data; //declare o membro de dados data, que devera armazenar os elementos da lista
 	int dataSize; //quantos elementos ha na lista?
 	int dataCapacity; //quantos elementos atualmente cabem na lista? 
 
@@ -65,7 +65,11 @@ private:
 
 template<class T>
 void MyVec<T>::push_back(const T&elem) {
-	//Implemente esta funcao! (nao reutilize a funcao "insere")
+	if (dataSize == dataCapacity) {
+		this->resize(this->dataCapacity*2);
+	} 
+	data[datasize] = elem;
+	dataSize++;
 }
 
 template<class T>
@@ -120,8 +124,13 @@ void MyVec<T>::resizeCapacity(int newCapacity) {
 	//data=[1,2,3,,], dataSize=3, dataCapacity=5 (vetor de capacidade 5, com 3 elementos ocupados)
 	//se chamarmos resizeCapacity(10), os membros de dados deverao ter os seguintes valores:
 	//data=[1,2,3,,,,,,,], dataSize=3, dataCapacity=10
-
-
+	if (newCapacity < this->dataCapacity) 
+		return;
+	T* temp = new T[newCapacity];
+	for(int i=0; i< this->dataSize; i++)
+		temp[i] = this->data[i];
+	delete[] this->data;
+	this->data = temp;
 }
 
 template<class T>
@@ -145,6 +154,11 @@ template<class T>
 MyVec<T>::MyVec(int n, const T&init) {
 	//Implemente esta funcao:
 	//Cria um vetor de tamanho e capacidade n, onde todos os n elementos valem "init"
+	dataSize = n; //ou deveria ser 0? afinal de contas, foram iniciados.
+	dataCapacity = n;
+	data = new T[n];
+	for ( int i=0; i<n; i++)
+		data[i] = init;
 
 }
 
@@ -156,6 +170,11 @@ MyVec<T>::MyVec(const MyVec &other) {
 	//Dica: nao duplique codigo! (esta funcao deve ser escrita utilizando apenas 2 linhas de codigo!)
 
 }
+	data = new T[dataCapacity];
+	for(int i=0;i<dataSize;i++) data[i] = other.data[i];
+	return *this;
+}
+
 
 template<class T>
 MyVec<T> & MyVec<T>::operator=(const MyVec &other) {
