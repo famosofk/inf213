@@ -49,6 +49,7 @@ public:
 	void insert(const T&,int pos);
 	void clear();
 	int eraseMatchingElements(const T& elem);
+	void sortedInsert(const T& elem);
 
 	void empty() const {return size() == 0;};
 	int size() const {return dataSize;};
@@ -63,6 +64,17 @@ private:
 	void destroy();
 	void resizeCapacity(int newCapacity);
 };
+
+template<typename T>
+void MyVec<T>::sortedInsert(const T& elem) {
+	int pos = 0;
+	for (int i=0; i< this->dataSize-1; i++)
+		if (this->data[i] < elem && this->data[i+1] > elem){
+			pos = i+1;
+			break;
+		}
+	this->insert(elem, pos);
+}
 
 template<typename T>
 int MyVec<T>::eraseMatchingElements(const T& elem) {
