@@ -48,6 +48,7 @@ public:
 	void resize(int newSize);
 	void insert(const T&,int pos);
 	void clear();
+	int eraseMatchingElements(const T& elem);
 
 	void empty() const {return size() == 0;};
 	int size() const {return dataSize;};
@@ -55,21 +56,35 @@ public:
 
 private:
 	T* data; //declare o membro de dados data, que devera armazenar os elementos da lista
-	int dataSize; //quantos elementos ha na lista?
-	int dataCapacity; //quantos elementos atualmente cabem na lista? 
+	int dataSize = 0; //quantos elementos ha na lista?
+	int dataCapacity = 0; //quantos elementos atualmente cabem na lista? 
 
 	void create();
 	void destroy();
 	void resizeCapacity(int newCapacity);
 };
 
+template<typename T>
+int MyVec<T>::eraseMatchingElements(const T& elem) {
+	int numElem = 0;
+	T a = T();
+	for(int i=0; i<this->dataSize; i++) 
+		if (this->data[i] == elem) {
+			this->data[i] = a;
+			numElem++;
+		}
+	for (int i=0; i<this->dataSize-1; i++)
+		if (this->data[i] == a) {
+			data[i] = data[i+1];
+			data[i+1] = a;
+		}
+	this->dataSize -= numElem;
+	return numElem;
+}
+
 template<class T>
 void MyVec<T>::push_back(const T&elem) {
-	if (dataSize == dataCapacity) {
-		this->resize(this->dataCapacity*2);
-	} 
-	data[datasize] = elem;
-	dataSize++;
+	this->insert(elem, this->dataSize);
 }
 
 template<class T>
@@ -129,6 +144,7 @@ void MyVec<T>::resizeCapacity(int newCapacity) {
 	T* temp = new T[newCapacity];
 	for(int i=0; i< this->dataSize; i++)
 		temp[i] = this->data[i];
+	this->dataCapacity = newCapacity;
 	delete[] this->data;
 	this->data = temp;
 }
@@ -154,12 +170,11 @@ template<class T>
 MyVec<T>::MyVec(int n, const T&init) {
 	//Implemente esta funcao:
 	//Cria um vetor de tamanho e capacidade n, onde todos os n elementos valem "init"
-	dataSize = n; //ou deveria ser 0? afinal de contas, foram iniciados.
+	this->create();
 	dataCapacity = n;
 	data = new T[n];
 	for ( int i=0; i<n; i++)
-		data[i] = init;
-
+		this->insert(init, dataSize);
 }
 
 
@@ -168,11 +183,9 @@ template<class T>
 MyVec<T>::MyVec(const MyVec &other) {
 	//Implemente esta funcao
 	//Dica: nao duplique codigo! (esta funcao deve ser escrita utilizando apenas 2 linhas de codigo!)
+	this->data = NULL;
+	*this = other;
 
-}
-	data = new T[dataCapacity];
-	for(int i=0;i<dataSize;i++) data[i] = other.data[i];
-	return *this;
 }
 
 

@@ -106,6 +106,8 @@ int main() {
   v.push_back('q');
   cout << v << endl;
 
+  cout << "Here" << endl;
+
 
   v.resize(5);
   cout << v << endl;

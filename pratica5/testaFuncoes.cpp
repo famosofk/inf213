@@ -58,10 +58,10 @@ int main() {
 		for(int i=0;i<size;i++) {
 			string st;
 			cin >> st;
-			v.sortedInsert(st);
+		/*	v.sortedInsert(st);
 			cout << "Inserindo: " << st << endl;
 			cout << "Novo vetor: ";
-			printVector(v);
+			printVector(v);*/
 		}
-	}
+	} 
 }
