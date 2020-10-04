@@ -56,26 +56,36 @@ public:
 
 
 private:
-	T* data; //declare o membro de dados data, que devera armazenar os elementos da lista
-	int dataSize = 0; //quantos elementos ha na lista?
-	int dataCapacity = 0; //quantos elementos atualmente cabem na lista? 
+	T* data; 
+	int dataSize; 
+	int dataCapacity; 
 
 	void create();
 	void destroy();
 	void resizeCapacity(int newCapacity);
 };
-
+//Ao analisarmos a função, vemos que o pior caso está no for. Como ele é O(n) e o inserte também
+//temos a complexidade de O(n^2)
 template<typename T>
 void MyVec<T>::sortedInsert(const T& elem) {
-	int pos = 0;
-	for (int i=0; i< this->dataSize-1; i++)
-		if (this->data[i] < elem && this->data[i+1] > elem){
-			pos = i+1;
+	if (this->dataSize == 0) {
+		this->insert(elem, 0);
+		return;
+	}
+
+	else if (elem > this->data[dataSize-1]) {
+		this->insert(elem, dataSize);
+		return;
+	}
+
+	for (int i=0; i<this->dataSize; i++)
+		if (this->data[i] > elem) {
+			this->insert(elem, i++);
 			break;
 		}
-	this->insert(elem, pos);
 }
 
+//Essa função é O(3n) pois é composta por 3 O(n), logo O(n).
 template<typename T>
 int MyVec<T>::eraseMatchingElements(const T& elem) {
 	int numElem = 0;
@@ -90,6 +100,12 @@ int MyVec<T>::eraseMatchingElements(const T& elem) {
 			data[i] = data[i+1];
 			data[i+1] = a;
 		}
+	if(this->data[dataSize-1] != a){
+		for(int i=0; i<this->dataSize-numElem; i++){
+			if(this->data[i] == a)
+			this->data[i] = this->data[dataSize-1];
+		}
+	}
 	this->dataSize -= numElem;
 	return numElem;
 }
@@ -101,27 +117,23 @@ void MyVec<T>::push_back(const T&elem) {
 
 template<class T>
 void MyVec<T>::resize(int newSize) {
-	if(newSize >= dataCapacity) { //primeiro temos que realocar o vector...
-		resizeCapacity(newSize); //para o resize vamos usar o tamanho exato caso seja necessario realocar o vector..
+	if(newSize >= dataCapacity) { 
+		resizeCapacity(newSize); 
 	}
-	for(int i=dataSize;i<newSize;i++) { //preencha a parte "extra" do vector com valores "em branco"
+	for(int i=dataSize;i<newSize;i++) { 
 		data[i] = T();
 	}
 	dataSize = newSize;
 }
 
-//insere o elemento na posicao pos e move os elementos ja presentes no vetor
-// pos pode ser:
-//   uma posicao apos o final do vetor (para inserir na ultima posicao) 
-//   ou uma posicao ja existente (nesse caso os elementos nessa posicao e apos ela serao movidos "para a frente")
 template<class T>
 void MyVec<T>::insert(const T&elem,int pos) {
 	if(pos > dataSize || pos < 0) {
 		throw MyVecException("Erro na funcao insert: posicao invalida");
 	}
 
-	if(dataSize == dataCapacity) { //preciso redimensionar?
-		if(dataCapacity ==0) //Exercicio: Por que e' preciso testar isso?
+	if(dataSize == dataCapacity) { 
+		if(dataCapacity ==0) //Exercicio: Por que e' preciso testar isso? Caso não tenha sido inicializado, apenas usado o create.
 			resizeCapacity(1);
 		else
 			resizeCapacity(dataCapacity*2);
@@ -143,14 +155,6 @@ void MyVec<T>::clear() {
 
 template<class T>
 void MyVec<T>::resizeCapacity(int newCapacity) {
-	//implemente esta funcao
-	//Ela deve redimensionar o vetor de modo que ele tenha capacidade newCapacity
-	//Se newCapacity for menor do que a capacidade atual voce devera ignorar a chamada a esta funcao (i.e., nunca reduziremos a capacidade do vetor)
-	//Nao se esqueca de liberar (deletar) a memoria que nao for mais necessaria (para evitar vazamentos de memoria)
-	//Exemplo de execucao:
-	//data=[1,2,3,,], dataSize=3, dataCapacity=5 (vetor de capacidade 5, com 3 elementos ocupados)
-	//se chamarmos resizeCapacity(10), os membros de dados deverao ter os seguintes valores:
-	//data=[1,2,3,,,,,,,], dataSize=3, dataCapacity=10
 	if (newCapacity < this->dataCapacity) 
 		return;
 	T* temp = new T[newCapacity];
@@ -180,8 +184,6 @@ MyVec<T>::MyVec() {
 
 template<class T>
 MyVec<T>::MyVec(int n, const T&init) {
-	//Implemente esta funcao:
-	//Cria um vetor de tamanho e capacidade n, onde todos os n elementos valem "init"
 	this->create();
 	dataCapacity = n;
 	data = new T[n];
@@ -193,9 +195,7 @@ MyVec<T>::MyVec(int n, const T&init) {
 //Construtor de copia
 template<class T>
 MyVec<T>::MyVec(const MyVec &other) {
-	//Implemente esta funcao
-	//Dica: nao duplique codigo! (esta funcao deve ser escrita utilizando apenas 2 linhas de codigo!)
-	this->data = NULL;
+this->data = NULL;
 	*this = other;
 
 }
@@ -204,10 +204,10 @@ MyVec<T>::MyVec(const MyVec &other) {
 template<class T>
 MyVec<T> & MyVec<T>::operator=(const MyVec &other) {
 	if(this==&other) return *this; 
-	destroy(); //Exercicio: por que precisamos disso?
+	destroy(); //Exercicio: por que precisamos disso? Desalocar.
 	dataCapacity = other.dataCapacity;
 	dataSize = other.dataSize;
-	//data = other.data; //por que nao podemos fazer isso?
+	//data = other.data; //por que nao podemos fazer isso? Não seria uma cópia, apontaria pro mesmo.
 	data = new T[dataCapacity];
 	for(int i=0;i<dataSize;i++) data[i] = other.data[i];
 	return *this;
