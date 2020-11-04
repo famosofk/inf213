@@ -6,17 +6,16 @@ using namespace std;
 //implemente aqui a funcao nao-membro reverse (etapa 4):
 template <class T>
 void reverse(MyList2<T> &lista) {
-    int counter = 0;
-    MyList2Iterator<T> next = lista.begin();
-    for(MyList2Iterator<T> it = lista.begin(); it != lista.end(); it++ ){
-      if (it.ptr->next == NULL)
-        next = it;
-      counter++; 
-      }
-      if(counter < 2)
-        return;
-        cout << "VALOR DO ULTIMO: " << next << endl;
-      
+    if (lista.size() < 2)
+      return;
+
+    typename MyList2<T>::iterator end = lista.begin();
+    for (int i=0; i<lista.size()-1; i++) 
+      end++;
+
+    typename MyList2<T>::iterator it = lista.begin();
+    for (int i=0; i<lista.size()/2; i++) 
+      swap(*(it++), *(end--)); 
 }
 
 

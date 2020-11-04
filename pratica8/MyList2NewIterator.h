@@ -11,7 +11,6 @@ TAD MyList2
 #include <string>
 #include <ostream>
 
-
 //Excessao usada pela classe MyList2
 class MyList2Exception {
 private:
@@ -20,8 +19,6 @@ public:
 	MyList2Exception (const std::string &msg0): msg(msg0) { }
 	const std::string & what() const { return msg; }
 };
-
-
 
 template<class T>
 class Node;
@@ -34,8 +31,6 @@ class Node { //a classe Node sera "escondida" quando trabalharmos com iteradores
 		Node<T> *next;
 		Node<T> *prev;
 };
-
-
 
 template<class T>
 class MyList2Iterator; //precisamos declarar essa classe antes da MyList2 para que o typedef abaixo nao de erro
@@ -71,8 +66,11 @@ public:
 	iterator erase(iterator elem); //remove o elemento apontado por Elem
 														//retorna o (apontador) para o elemento apos o removido
 
-	iterator begin() {return iterator(dataFirst);} //Exercicio: e se tivermos uma lista constante, como itera-la para, por exemplo, imprimir os elementos?
-	iterator end() {return iterator(NULL);} //retorna um apontador para um nodo que estaria APOS o final da lista
+	iterator begin() {return iterator(dataFirst, this);} 
+	//Exercicio: e se tivermos uma lista constante, como itera-la para, por exemplo, imprimir os elementos?
+	//Seria necessário utilizar iteradores constantes.
+
+	iterator end() {return iterator(NULL, this);} //retorna um apontador para um nodo que estaria APOS o final da lista
 		
 	//por simplicidade, nao vamos criar iteradores constantes...
 
@@ -98,12 +96,11 @@ private:
 	void destroy(Node<T> * it);
 };
 
-
 template<class T>
 class MyList2Iterator {
 	friend class MyList2<T>;
 public:
-	MyList2Iterator(Node<T> *ptr_): ptr(ptr_) {}
+	MyList2Iterator(Node<T> *ptr_, MyList2<T> *list_): ptr(ptr_), list(list_) {}
 	T &operator*() {return ptr->data;}
 	const T &operator*() const {return ptr->data;} //versao constante do operador de derreferencia
 
@@ -111,10 +108,15 @@ public:
 	bool operator!=(const MyList2Iterator &other) const {return ptr!=other.ptr;}
 
 	//exercicio: faz sentido ter operatores <, > , <=, etc?
-	//           faz sentido termos operadores +, =+ (para "pularmos" n elementos em vez de 
-	//                                                avancarmos de um em um) , etc?
+	//São vários nodos alocados dinamicamente. A comparação nem mesmo faz sentido. 
+
+	//           faz sentido termos operadores +, =+ (para "pularmos" n elementos em vez de avancarmos de um em um) , etc?
+	//Não faz sentido e é completamente irracional.Já que você obviamente pularia elementos, como o usuário poderia tentar acessar itens que não existem. 
+	//Exemplo: lista de 5 elementos. usuário tá na posição 3 (ou seja, só tem +1 elemento) e ele usa um +3.
 
 	//exercicio: armazenamos um ponteiro nesta classe. Deveriamos ter destrutor, constr. de copia, etc?
+	//Não. Iterador só aponta pra um objeto, não é responsável por cria-lo ou desaloca-lo. Caso você fizesse isso, poderia desalocar um objeto ao destruir um iterador.
+	//O que causaria inúmeros problemas lógicos e técnicos na sua aplicação.
 
 	//pre incremento/decremento
 	MyList2Iterator<T> operator++();
@@ -128,6 +130,7 @@ public:
 
 private:
 	Node<T> *ptr;
+	MyList2<T> *list;
 };
 
 
@@ -140,7 +143,13 @@ MyList2Iterator<T> MyList2Iterator<T>::operator++() {
 
 template<class T>
 MyList2Iterator<T> MyList2Iterator<T>::operator--() {
-	ptr = ptr->prev;		
+	if (!ptr) {
+		MyList2Iterator<T> curr = list->begin();
+		for (int i=0; i<list->size()-1; i++) curr++;
+		*this = curr;
+		return *this;
+	}
+	ptr = ptr->prev;
 	return *this;
 }
 
@@ -156,12 +165,16 @@ MyList2Iterator<T> MyList2Iterator<T>::operator++(int) {
 
 template<class T>
 MyList2Iterator<T> MyList2Iterator<T>::operator--(int) {
-	MyList2Iterator<T> copy = *this;
+	if (!ptr) {
+		MyList2Iterator<T> curr = list->begin();
+		for (int i=0; i<list->size()-1; i++) curr++;
+		*this = curr;
+		return MyList2Iterator(NULL, list);
+	}
+	MyList2Iterator<T> curr = MyList2Iterator<T>(ptr, list);
 	ptr = ptr->prev;
-	return copy;
+	return curr;
 }
-
-
 
 //funcao auxiliar (nao membro)
 //Dado um apontador first para o primeiro nodo de uma lista encadeada, deleta todos os nodos apos 
@@ -196,7 +209,6 @@ MyList2<T>::MyList2(int n, const T&init) {
 	for(int i=0;i<n;i++) push_back(init); //implementacao pode ser mais eficiente se evitar atualizar o apontador "dataLast" em cada iteracao
 }
 
-
 //Construtor de copia
 template<class T>
 MyList2<T>::MyList2(const MyList2 &other) {
@@ -208,6 +220,9 @@ template<class T>
 MyList2<T> & MyList2<T>::operator=(const MyList2 &other) {
 	if(this==&other) return *this; 
 	clear(); //Exercicio: por que precisamos disso?
+	//O clear funciona da seguinte forma: primeiro ele destrói a lista e depois "cria" ela de novo. Sendo assim, o objetivo é apagar todos os nós que foram alocados
+	//porque evitamos vazamento de memória e deixar lixo alocado em algum lugar, além de que, permite que usemos o push back e as listas fiquem exatamente iguais
+	//já que, ao fazer isso, a nova lista está vazia
 
 	if(other.dataFirst == NULL) {
 		dataFirst = dataLast = NULL;
@@ -221,10 +236,8 @@ MyList2<T> & MyList2<T>::operator=(const MyList2 &other) {
 	return *this;
 }
 
-
 //---------------------------------------------------------------------------------------
 //Funcoes de acesso
-
 
 template<class T>
 void MyList2<T>::push_back(const T&elem) {
@@ -251,9 +264,6 @@ void MyList2<T>::push_front(const T&elem) {
 	dataSize++;
 }
 
-
-
-
 //insere o elemento na posicao NA posicao nodeBefore
 //diferentemente da lista simplesmente encadeada, isso pode ser feito de forma 
 //eficiente na lista duplamente encadeada
@@ -277,13 +287,6 @@ void MyList2<T>::insert(const T&elem, iterator whereIt) {
 		dataSize++;
 	}	
 }
-
-
-
-
-
-
-
 
 template<class T>
 void MyList2<T>::clear() {
