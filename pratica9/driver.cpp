@@ -118,24 +118,20 @@ void etapa3() {
 void etapa4() {
 	MyStack<int> s;
 	
-	int n; cin >> n;
+	int argumentsNumber; cin >> argumentsNumber;
 	int count = 0;
-
-	for (int i=0; i<n; i++) {
-		int a; cin >> a;
-
-		if (a > count) {
-			for (int j=count + 1; j!=a; j++) s.push(j);
-			count = a;
+	for (int i=0; i<argumentsNumber; i++) {
+		int input; cin >> input;
+		if (input > count) {
+			for (int j=count + 1; j!=input; j++) s.push(j);
+			count = input;
 			continue;
 		}
-
-		if (a == count) {
+		if (input == count) {
 			cout << "NAO" << endl;
 			return;
 		} 
-			
-		if (a != s.top()) {
+		if (input != s.top()) {
 			cout << "NAO" << endl;
 			return;
 		}
@@ -148,8 +144,9 @@ void etapa4() {
 
 //---------------------------------------
 
+	
+	int main() {
 
-int main() {
 	int etapa;
 	cin >> etapa;
 	switch(etapa) {
