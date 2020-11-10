@@ -17,34 +17,37 @@ public:
 	int size() ;
 
 private:
-	bool shouldIUpdateStack2 = false;
+	void copyContentTo1To2IfNecessary();
 	MyStack<T> pilha1; //nao mude nada nessa interface!!!
 	MyStack<T> pilha2; //nao mude nada nessa interface!!!
 };
 
 template<typename T>
 void MyQueue2<T>::push(const T& el){
-	while (!pilha1.empty()) { 
-        pilha2.push(pilha1.top()); 
-        pilha1.pop(); 
-    } 
-    pilha1.push(el); 
-    while (!pilha2.empty()) { 
-        pilha1.push(pilha2.top()); 
-        pilha2.pop(); 
-    } 
+	pilha1.push(el);
 }
 
 template<typename T>
 void MyQueue2<T>::pop(){
-	if (pilha1.empty())
-		return; 
-    pilha1.pop(); 
+	if (pilha1.empty() && pilha2.empty()) return;
+	copyContentTo1To2IfNecessary();
+	pilha2.pop();
 }
 
 template<typename T>
 const T MyQueue2<T>::front(){
-	return pilha1.top();
+	copyContentTo1To2IfNecessary();
+	return pilha2.top();
+}
+
+template<typename T>
+void MyQueue2<T>::copyContentTo1To2IfNecessary() {
+	if(pilha2.empty()) {
+            while (!pilha1.empty()) { 
+                pilha2.push(pilha1.top()); 
+                pilha1.pop(); 
+        } 
+	}
 }
 
 template<typename T>
