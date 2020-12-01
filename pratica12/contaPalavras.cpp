@@ -29,7 +29,7 @@ int main (int argc, char ** argv) {
         while (getline(cin, line)) {
             char * tok = strtok(&line.at(0), DELIMITERS);
             while (tok) {
-                std::string str(tok);
+                string str(tok);
                 set.insert(str);
                 tok = strtok(NULL, DELIMITERS);
                 wordNumber++;
