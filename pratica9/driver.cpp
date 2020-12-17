@@ -62,7 +62,7 @@ void etapa2() {
 				stack.push(c);
 				break;
 			case ')':
-				if(stack.empty() || stack.top()!='(')
+				if(stack.empty() || stack.top()!='(') 
 					valid = false;
 				stack.pop();
 				break;
@@ -79,16 +79,11 @@ void etapa2() {
 		}
 		if(!valid) break;
 	}
-
+	
 	if(valid && stack.empty()) cout << "Consistente" << endl;
 	else cout << "Inconsistente" << endl;
 	
 }
-
-//---------------------------------------
-
-// Na etapa 3 voce deve implementar MyQueue2.h e descomentar os codigos de teste abaixo...
-
 
 #include "MyQueue2.h"
 void etapa3() {
@@ -109,11 +104,6 @@ void etapa3() {
 		} else cout << q.size() << "\n";
 	}	
 }
-
-//---------------------------------------
-
-// Insira aqui o codigo para a etapa 4....
-
 
 void etapa4() {
 	MyStack<int> s;

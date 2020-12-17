@@ -63,9 +63,11 @@ void ArvoreExpressao::leArvore() {
 string ArvoreExpressao::percorre (int node) const {
 	string result = "";
 
+	//Caso não tenha filhos, concateno no result o valor de operator. (da expressão)
 	if (filhoEsquerdo[node] == -1 && filhoDireito[node] == -1)
 		return result += operador[node];
 
+	//Caso tenha filhos, chamo a função recursivamente adicionando o valor do operator entre eles e os parenteses, olhando pra cada filho
 	result += '(' + percorre(filhoEsquerdo[node]) + operador[node] + percorre(filhoDireito[node]) + ')';
 
 	return result;
@@ -83,6 +85,8 @@ void ArvoreExpressao::imprimeExpressao() const {
 }
 
 int ArvoreExpressao::avalia (int node) const {
+	// Mesmo conceito da função passada, porém aqui iremos trabalhar com números. Com temos vetor de char
+	//os números serão de 0 a 9. Sendo assim, caso não tenha filhos, eu retorno o char como int		
 	if (filhoEsquerdo[node] == -1 && filhoDireito[node] == -1)
 		return int(operador[node]) - 48; 
 
@@ -103,10 +107,11 @@ int ArvoreExpressao::avaliaValor() const {
 }
 
 int ArvoreExpressao::calculaAlt (int node) const {
+	//basicamente ele se o nodo tem filhos, caso ele tenha, retorna 1 + a chamada pra calcular os filhos dos filhos.
 	if (filhoEsquerdo[node] == -1 && filhoDireito[node] == -1)
 		return 0;
-
-	return 1 + max(calculaAlt(filhoEsquerdo[node]), calculaAlt(filhoDireito[node]));
+		
+	return 1 + std::max(calculaAlt(filhoEsquerdo[node]), calculaAlt(filhoDireito[node]));
 } 
 
 int ArvoreExpressao::altura() const {
@@ -114,6 +119,9 @@ int ArvoreExpressao::altura() const {
 }
 
 void ArvoreExpressao::nodosPorNivel (int nodesPerLevel [], int currentLevel, int node) const {
+	//basicamente temos um vetor com n possições. Chamamos essa função pra cada nodo examinando seus filhos
+	//ou seja, cada nodo chama a função até 2 vezes (supondo que tenha dois filhos), e aí cada filho aumenta
+	// em um a posição do vetor correspondente ao nível em que se encontra.
 	nodesPerLevel[currentLevel]++;
 	
 	if (filhoEsquerdo[node] == -1 && filhoDireito[node] == -1)
@@ -125,6 +133,8 @@ void ArvoreExpressao::nodosPorNivel (int nodesPerLevel [], int currentLevel, int
 
 
 int ArvoreExpressao::nivelMaisNodos() const {
+	//depois de aplicar o que foi comentado acima, percorremos o vetor e retornamos o index que contem
+	//o maior número de filhos.
 	if (operador.size() == 1) return 1;
 
 	int numLevels = calculaAlt(0);

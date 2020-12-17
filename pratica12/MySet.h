@@ -46,8 +46,6 @@ private:
 	Node<T> *root;
 	int size_;
 
-
-	//funcoes auxiliares...
 	pair<iterator,bool> insert(const T&elem, Node<T> *&root,Node<T> *parent); 
 	iterator find(const T&elem, Node<T> *root);
 
@@ -64,7 +62,9 @@ MySet<T>::~MySet () {
 
 template <class T> 
 void MySet<T>::destroy (Node<T> *node) {
-	if (!node) return;
+	//Chamamos destroy para os filhos, em seguida deletamos o pai
+	if (!node)
+		return;
 	destroy(node->left);
 	destroy(node->right);
 	delete node;
@@ -72,6 +72,7 @@ void MySet<T>::destroy (Node<T> *node) {
 
 template <class T>
 MySet<T> & MySet<T>::operator= (const MySet<T> & other) {
+	//construtor de cópia padrão com uma função que constrói uma cópia
 	if (&other == this) 
 		return *this;
 	this->root = copyBuilder(other.root, nullptr);
@@ -80,13 +81,18 @@ MySet<T> & MySet<T>::operator= (const MySet<T> & other) {
 
 template <class T>
 MySet<T>::MySet(const MySet & other) {
+	//construtor de cópia padrão com uma função que constrói uma cópia
 	this->root = copyBuilder(other.root, nullptr);
 }
 
 
 template <class T>
 Node<T> * MySet<T>::copyBuilder (const Node<T> * node, Node<T> * parent) {
-	if (!node) return nullptr;
+	//Construtor de cópia cria um ponteiro copy que aloca um nodo com os dados. 
+	//em seguida ele aponta para os pais e chama o construtor de cópia para os filhos, assim tem todo um ramo
+	//da árvore e não apenas um nodo copiado.
+	if (!node)
+		return nullptr;
 	Node<T> * copy = new Node<T>(node->elem);
 	copy->parent = parent;
 	copy->left = copyBuilder(node->left, copy);
@@ -200,6 +206,9 @@ int MySet<T>::size() const {
 
 //funcao auxiliar...
 //exercicio: por que a raiz precisa ser passada por referencia?
+//Pq a partir da raiz chegamos a qualquer ponto. Por exemplo, usando ++ vamos para a direita e -- para a esquerda.
+//Se usassemos, por exemplo, passassemos por cópia, chamaríamos o construtor de cópia e aí criaremos um outro set.
+//pois ele chamaria o construtor de cópia para os filhos e inseriria nesse novo ramo.
 template  <class T>
 pair<typename MySet<T>::iterator,bool> MySet<T>::insert(const T&elem, Node<T> * &root, Node<T> *parent) { //retorna um iterador para o elemento inserido (o valor booleano sera' true se o elemento nao existia no conjunto e falso caso ele ja exista (ou seja, o novo elemento nao foi inserido) ).
 	if(!root) {

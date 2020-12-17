@@ -17,37 +17,37 @@ public:
 	int size() ;
 
 private:
-	void copyContentTo1To2IfNecessary();
+	void transferElementsFrom1To2IfNecessary();
 	MyStack<T> pilha1; //nao mude nada nessa interface!!!
 	MyStack<T> pilha2; //nao mude nada nessa interface!!!
 };
 
 template<typename T>
 void MyQueue2<T>::push(const T& el){
-	pilha1.push(el);
+	pilha1.push(el); 
+}
+template<typename T>
+void MyQueue2<T>::transferElementsFrom1To2IfNecessary(){
+	if(pilha2.empty()) {
+		 while (!pilha1.empty()) { 
+            pilha2.push(pilha1.top()); 
+            pilha1.pop(); 
+        } 
+	}
 }
 
 template<typename T>
 void MyQueue2<T>::pop(){
-	if (pilha1.empty() && pilha2.empty()) return;
-	copyContentTo1To2IfNecessary();
-	pilha2.pop();
-}
+	if (pilha1.empty() && pilha2.empty()) 
+		return;
+  	transferElementsFrom1To2IfNecessary();
+    pilha2.pop();  
+    }
 
 template<typename T>
 const T MyQueue2<T>::front(){
-	copyContentTo1To2IfNecessary();
+	transferElementsFrom1To2IfNecessary();
 	return pilha2.top();
-}
-
-template<typename T>
-void MyQueue2<T>::copyContentTo1To2IfNecessary() {
-	if(pilha2.empty()) {
-            while (!pilha1.empty()) { 
-                pilha2.push(pilha1.top()); 
-                pilha1.pop(); 
-        } 
-	}
 }
 
 template<typename T>
@@ -59,19 +59,5 @@ template<typename T>
 int MyQueue2<T>::size(){
 	return pilha1.size();
 }
-
-
-
-/* Faca sua implementacao abaixo desta linha...*/
-/* Faca sua implementacao abaixo desta linha...*/
-/* Faca sua implementacao abaixo desta linha...*/
-/* Faca sua implementacao abaixo desta linha...*/
-
-
-
-
-
-
-
 
 #endif
